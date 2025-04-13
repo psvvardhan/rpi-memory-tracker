@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  storage-monitor:
+    build: .
+    container_name: raspberry-pi-storage-monitor
+    ports:
+      - "5000:5000"
+    volumes:
+      - /:/host-root:ro
+    restart: always
+    # System restart policies
