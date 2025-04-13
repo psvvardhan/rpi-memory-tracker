@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  storage-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.remote
+      args:
+        MODE: remote
+        GIT_REPO: https://github.com/psvvardhan/rpi-memory-tracker.git
+        GIT_BRANCH: main
+    container_name: raspberry-pi-storage-monitor
+    ports:
+      - "5000:5000"
+    volumes:
+      # Only mount host root for storage monitoring, code comes from Git
+      - /:/host-root:ro
+

@@ -1,0 +1,32 @@
+FROM python:3.9-slim
+
+# Install Git and required packages
+RUN apt-get update && apt-get install -y \
+    git \
+    coreutils \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /app
+
+WORKDIR /app
+
+# Git repository arguments (used only in remote mode)
+ARG GIT_REPO=https://github.com/psvvardhan/rpi-memory-tracker.git
+ARG GIT_BRANCH=main
+
+# Running in REMOTE mode - fetching code from Git repository
+RUN echo "Running in REMOTE mode - fetching code from Git repository" && \
+    git clone ${GIT_REPO} . && \
+    git checkout ${GIT_BRANCH}
+
+RUN pip install --upgrade pip
+# Install Python dependencies
+RUN pip install --no-cache-dir flask
+
+# Expose the port
+EXPOSE 5000
+
+# Command to run the application
+CMD ["python", "app.py"]
+# CMD ["bash"]
